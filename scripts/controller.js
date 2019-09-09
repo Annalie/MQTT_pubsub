@@ -27,7 +27,7 @@ btnConnect.addEventListener('click', function (e) {
     e.preventDefault();
 
     console.log("Subscribe{ topic: " + subTopic.value+" }");
-    client.subscribe("mqtt/" + subTopic.value);
+    client.subscribe(subTopic.value);
     let tbl = document.getElementById('subscriber');
     let tbody = document.getElementById('submsg');
     let tr = document.createElement('tr');
@@ -48,7 +48,7 @@ btnConnect.addEventListener('click', function (e) {
 
   btnUnsubscribe.addEventListener('click', function (e) {
     e.preventDefault();
-    client.unsubscribe("mqtt/" + subTopic.value);
+    client.unsubscribe(subTopic.value);
     btnUnsubscribe.disabled = true;
     btnSubscribe.disabled = false;
     console.log("Unsubscribe { topic : " + subTopic.value+" }")
@@ -77,15 +77,15 @@ btnConnect.addEventListener('click', function (e) {
 
 
   client.on("message", function (topic, payload) {
-    let finalTopic = topic.slice(5);
-    console.log("Received { topic: "+finalTopic+"; payload: "+ payload+" }");
+    // let finalTopic = topic.slice(5);
+    console.log("Received { topic: "+topic+"; payload: "+ payload+" }");
     let tbl = document.getElementById('receiver');
     let tbody = document.getElementById('msg');
     let tr = document.createElement('tr');
     let msgTopic = document.createElement('td');
     let msgPayload = document.createElement('td');
     let msgTime = document.createElement('td');
-    msgTopic.appendChild(document.createTextNode(finalTopic));
+    msgTopic.appendChild(document.createTextNode(topic));
     msgPayload.appendChild(document.createTextNode(payload));
     msgTime.appendChild(document.createTextNode(moment().format('llll')));
     tr.appendChild(msgTopic);
@@ -99,7 +99,7 @@ btnConnect.addEventListener('click', function (e) {
 
   btnPublish.addEventListener('click', function (e) {
     e.preventDefault();
-    client.publish("mqtt/" + pubTopic.value, pubPayload.value);
+    client.publish(pubTopic.value, pubPayload.value);
     console.log("Publish { topic: "+pubTopic.value+"; payload: "+ pubPayload.value+" }");
     let tbl = document.getElementById('publisher');
     let tbody = document.getElementById('pubmsg');
